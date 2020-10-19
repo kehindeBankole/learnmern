@@ -1,8 +1,15 @@
 const express= require('express')
 const app = express()
+const connectDB = require('./config/config')
 const authRoute = require('./routes/auth')
+const userRoute = require('./routes/user')
+const postRoute = require('./routes/post')
+connectDB()
+app.use(express.json({ extended: false }));
 app.get('/' , (req , res)=>{
     res.send("helllo wold")
 })
 app.use('/auth' , authRoute)
+app.use('/user' , userRoute)
+app.use('/post' , postRoute)
 app.listen(8080 , ()=>console.log('connected'))
