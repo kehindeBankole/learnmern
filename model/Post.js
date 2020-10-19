@@ -8,11 +8,11 @@ const PostSchema = mongoose.Schema({
         type: String,
         required: true
       },
-      // photo: {
-      //   type: String,
-      //   default: "no photo",
-      //   required:true
-      // },
+      photo: {
+        type: String,
+        default: "no photo",
+        required:true
+      },
       postedby:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'users'
