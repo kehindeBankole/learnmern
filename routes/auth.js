@@ -2,38 +2,41 @@ const express = require("express");
 const authRoute = express.Router();
 const User = require("../model/User");
 const bcrypt = require("bcryptjs");
-const auth = require("../middleware/auth")
+const auth = require("../middleware/auth");
 var jwt = require("jsonwebtoken");
 const { check, validationResult } = require("express-validator");
 
-authRoute.post('/', [
+authRoute.post(
+  "/",
+  [
     check("email", "please put valid email").isEmail(),
     check("password", "must be up to 6").isLength({
-        min: 6,
+      min: 6,
     }),
-], async (req, res) => {
+  ],
+  async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(400).json({
-            errors: errors.array(),
-        });
+      return res.status(400).json({
+      error:"check well please"
+      });
     }
     const { email, password } = req.body;
     try {
-        let user = await User.findOne({ email });
-        if (!user) {
-            return res.status(400).json({
-                error: "user doesnt exist",
-            });
-        }
-        let ispword = bcrypt.compareSync(password, user.password);
-        if (!ispword) {
-            return res.status(400).json({
-              error: "invalid details",
-            });
-          }
-          let payload = {
-            id: user.id,
+      let user = await User.findOne({ email });
+      if (!user) {
+        return res.status(400).json({
+          error: "user doesnt exist",
+        });
+      }
+      let ispword = bcrypt.compareSync(password, user.password);
+      if (!ispword) {
+        return res.status(400).json({
+          error: "invalid details",
+        });
+      }else{
+        let payload = {
+          id: user.id,
         };
         let token = jwt.sign(
           {
@@ -45,19 +48,25 @@ authRoute.post('/', [
         return res.status(200).json({
           msg: "log in successfull",
           token,
+          user
         });
+      }
+    
     } catch (error) {
-
+      return res.status(401).json({ error });
     }
-})
+  }
+);
 
-authRoute.get('/' , auth , async (req , res)=>{
-
-try {
-    let user = await User.findById(req.user.payload.id)
-    res.send(user)
-} catch (error) {
-    return res.status(401).json({ error});
-}
-})
-module.exports = authRoute
+authRoute.get("/", auth, async (req, res) => {
+  try {
+    let user = await User.findById(req.user.payload.id).select('-password');
+    return res.status(200).json({
+     
+      user
+    });
+  } catch (error) {
+    return res.status(401).json({ error });
+  }
+});
+module.exports = authRoute;

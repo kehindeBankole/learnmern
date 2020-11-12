@@ -4,6 +4,8 @@ const connectDB = require('./config/config')
 const authRoute = require('./routes/auth')
 const userRoute = require('./routes/user')
 const postRoute = require('./routes/post')
+const cors = require('cors')
+app.use(cors())
 connectDB()
 app.use(express.json({ extended: false }));
 app.get('/' , (req , res)=>{

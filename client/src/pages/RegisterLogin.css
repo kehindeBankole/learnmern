@@ -1,0 +1,58 @@
+.body {
+  height: 100vh;
+}
+.spin{
+  animation: turn 4s infinite ease-in-out;
+}
+@keyframes turn{
+  50%{
+    transform: rotate(180deg);
+  }
+  75%{
+    transform: rotate(270deg);
+  }
+  100%{
+    transform: rotate(360deg);
+  }
+}
+.mod {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  height: 100vh;
+  width: 100%;
+  transform: scale(1);
+  opacity: 1;
+  z-index: 999;
+  transition: 0.5s;
+}
+.nomod {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  height: 100vh;
+  width: 100%;
+  opacity: 0;
+  transform: scale(0);
+  z-index: -999;
+  transition: 0.5s;
+}
+.modcontent {
+  background-color: white;
+  margin:5% auto;
+  padding: 40px 50px;
+  width: 70%;
+}
+.signin {
+  padding: 22% 5%;
+}
+input.form-control , button.btn{
+    border-radius: 50px;
+    text-transform: lowercase;
+
+}
+input.form-control{
+  padding:30px;
+}
